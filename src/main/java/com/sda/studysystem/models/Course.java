@@ -22,4 +22,7 @@ public class Course {
 
     private String name;
     private Double durationHours;
+
+    public void setActive(boolean b) {
+    }
 }
