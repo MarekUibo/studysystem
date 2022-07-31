@@ -6,11 +6,16 @@ import com.sda.studysystem.repositories.SchoolRepository;
 import com.sda.studysystem.services.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of SchoolService
+ *
+ * @author
+ */
 @Service
 @Transactional
 public class SchoolServiceImpl implements SchoolService {
@@ -25,11 +30,23 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School findSchoolById(Long id) throws SchoolNotFoundException {
-        Optional<School>optionalSchool=schoolRepository.findById(id);
+        Optional<School> optionalSchool = schoolRepository.findById(id);
 
-        if(optionalSchool.isEmpty()){
+        if(optionalSchool.isEmpty()) {
             throw new SchoolNotFoundException(id);
         }
+
+        return optionalSchool.get();
+    }
+
+    @Override
+    public School findSchoolByName(String name) throws SchoolNotFoundException {
+        Optional<School> optionalSchool = schoolRepository.findByName(name);
+
+        if(optionalSchool.isEmpty()) {
+            throw new SchoolNotFoundException(name);
+        }
+
         return optionalSchool.get();
     }
 
@@ -40,7 +57,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public void updateSchool(School school) throws SchoolNotFoundException {
-        if(findSchoolById(school.getId()) != null){
+        if(findSchoolById(school.getId()) != null) {
             schoolRepository.saveAndFlush(school);
         }
     }

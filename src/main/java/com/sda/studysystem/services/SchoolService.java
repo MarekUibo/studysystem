@@ -15,6 +15,8 @@ public interface SchoolService {
 
     School findSchoolById(Long id) throws SchoolNotFoundException;
 
+    School findSchoolByName(String name) throws SchoolNotFoundException;
+
     List<School> findAllSchools();
 
     void updateSchool(School school) throws SchoolNotFoundException;
