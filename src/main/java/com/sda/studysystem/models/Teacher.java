@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Teacher model
@@ -17,12 +18,13 @@ import java.util.List;
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
     private String firstName;
     private String lastName;
     private String address;
     private String phone;
+    private String idCode;
 
     @OneToOne(cascade = CascadeType.MERGE)
     private School school;

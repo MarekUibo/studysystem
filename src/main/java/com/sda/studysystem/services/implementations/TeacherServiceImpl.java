@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -18,7 +19,7 @@ public class TeacherServiceImpl implements TeacherService {
     
     @Autowired
     private TeacherRepository teacherRepository;
-    private Long id;
+    private UUID id;
 
     @Override
     public void createTeacher(Teacher teacher) {
@@ -28,10 +29,20 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher findTeacherById(Long id) throws TeacherNotFoundException {
+    public Teacher findTeacherById(UUID id) throws TeacherNotFoundException {
         Optional<Teacher> optionalTeacher=teacherRepository.findById(id);
         
         if(optionalTeacher.isEmpty()){
+            throw new TeacherNotFoundException(id);
+        }
+        return optionalTeacher.get();
+    }
+
+    @Override
+    public Teacher findTeacherByIdCode(String idCode) throws TeacherNotFoundException {
+        Optional<Teacher> optionalTeacher= teacherRepository.findById(id);
+
+        if (optionalTeacher.isEmpty()){
             throw new TeacherNotFoundException(id);
         }
         return optionalTeacher.get();
@@ -51,7 +62,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public void deleteTeacherById(Long Id) throws TeacherNotFoundException {
+    public void deleteTeacherById(UUID id) throws TeacherNotFoundException {
         Teacher teacher = findTeacherById(id);
         teacher.setActive(false);
         teacherRepository.saveAndFlush(teacher);
@@ -60,7 +71,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public void restoreTeacherById(Long Id) throws TeacherNotFoundException {
+    public void restoreTeacherById(UUID id) throws TeacherNotFoundException {
         Teacher teacher = findTeacherById(id);
         teacher.setActive(true);
         teacherRepository.saveAndFlush(teacher); 

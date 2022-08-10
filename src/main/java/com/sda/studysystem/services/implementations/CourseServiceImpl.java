@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -26,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.save(course);
     }
     @Override
-    public Course findCourseById(Long id) throws CourseNotFoundException {
+    public Course findCourseById(UUID id) throws CourseNotFoundException {
         Optional<Course> optionalCourse=courseRepository.findById(id);
 
         if(optionalCourse.isEmpty()){
@@ -49,7 +50,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void deleteCourseById(Long id) throws CourseNotFoundException {
+    public void deleteCourseById(UUID id) throws CourseNotFoundException {
         Course course = findCourseById(id);
         course.setActive(false);
         courseRepository.saveAndFlush(course);
@@ -57,7 +58,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void restoreCourseById(Long id) throws CourseNotFoundException {
+    public void restoreCourseById(UUID id) throws CourseNotFoundException {
         Course course = findCourseById(id);
         course.setActive(true);
         courseRepository.saveAndFlush(course);
